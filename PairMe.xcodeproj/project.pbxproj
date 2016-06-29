@@ -7,21 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F472EC7DF8FFDFF38337F86 /* Pods_PairMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4484FFDDA1993E59B8AD06A6 /* Pods_PairMe.framework */; };
 		843CD4DF1C9F9DC000CE76F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843CD4DE1C9F9DC000CE76F8 /* AppDelegate.swift */; };
 		843CD4E11C9F9DC000CE76F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843CD4E01C9F9DC000CE76F8 /* ViewController.swift */; };
-		843CD4E41C9F9DC000CE76F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843CD4E21C9F9DC000CE76F8 /* Main.storyboard */; };
 		843CD4E61C9F9DC000CE76F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 843CD4E51C9F9DC000CE76F8 /* Assets.xcassets */; };
 		843CD4E91C9F9DC000CE76F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843CD4E71C9F9DC000CE76F8 /* LaunchScreen.storyboard */; };
+		843CD4F11C9FA64B00CE76F8 /* ViewControllerStudentSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843CD4F01C9FA64B00CE76F8 /* ViewControllerStudentSignUp.swift */; };
+		849A9F4F1CC00D240004C88B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849A9F4E1CC00D230004C88B /* Constants.swift */; };
+		849A9F511CC00DAC0004C88B /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849A9F501CC00DAC0004C88B /* DataService.swift */; };
+		8B0E97751CD8EF60008B01CF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E97741CD8EF60008B01CF /* LoginViewController.swift */; };
+		8B0E97771CD93415008B01CF /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E97761CD93415008B01CF /* WelcomeViewController.swift */; };
+		8B35C9521CE0EB0600698D53 /* TutorScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B35C9511CE0EB0600698D53 /* TutorScheduleViewController.swift */; };
+		8B39A6F11CE133D2001C068E /* MyScheduleViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B39A6F01CE133D2001C068E /* MyScheduleViewCell.swift */; };
+		8BC08FD81D12569800224011 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BC08FD61D12569800224011 /* Main.storyboard */; };
+		8BC08FDA1D125F9B00224011 /* TutorSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC08FD91D125F9B00224011 /* TutorSignUp.swift */; };
+		8BC08FDC1D1282BC00224011 /* TutorLogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC08FDB1D1282BC00224011 /* TutorLogIn.swift */; };
+		8BC08FDE1D1286D600224011 /* TutorWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC08FDD1D1286D600224011 /* TutorWelcome.swift */; };
+		8BF9D95F1CE249350058224D /* PairMe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9D95B1CE249350058224D /* PairMe.xcdatamodeld */; };
+		8BF9D9611CE94D030058224D /* ScheduleTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9D9601CE94D030058224D /* ScheduleTime.swift */; };
+		8BFEF4301CDD1DCB00DCABDE /* Tutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFEF42F1CDD1DCB00DCABDE /* Tutor.swift */; };
+		8BFEF4321CDD245B00DCABDE /* TutorScheduleViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFEF4311CDD245B00DCABDE /* TutorScheduleViewCell.swift */; };
+		8BFEF43F1CE0356200DCABDE /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFEF43E1CE0356200DCABDE /* Schedule.swift */; };
+		8BFEF4411CE03C3500DCABDE /* MyScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFEF4401CE03C3500DCABDE /* MyScheduleViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FBF5EF60C9CB368E19BCA2D /* Pods-PairMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PairMe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PairMe/Pods-PairMe.debug.xcconfig"; sourceTree = "<group>"; };
+		4484FFDDA1993E59B8AD06A6 /* Pods_PairMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PairMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		843CD4DB1C9F9DC000CE76F8 /* PairMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PairMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		843CD4DE1C9F9DC000CE76F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		843CD4E01C9F9DC000CE76F8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		843CD4E31C9F9DC000CE76F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		843CD4E51C9F9DC000CE76F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		843CD4E81C9F9DC000CE76F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		843CD4EA1C9F9DC000CE76F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		843CD4F01C9FA64B00CE76F8 /* ViewControllerStudentSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerStudentSignUp.swift; sourceTree = "<group>"; };
+		849A9F4E1CC00D230004C88B /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		849A9F501CC00DAC0004C88B /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		8B0E97741CD8EF60008B01CF /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8B0E97761CD93415008B01CF /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		8B35C9511CE0EB0600698D53 /* TutorScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorScheduleViewController.swift; sourceTree = "<group>"; };
+		8B39A6F01CE133D2001C068E /* MyScheduleViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyScheduleViewCell.swift; sourceTree = "<group>"; };
+		8BC08FD71D12569800224011 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8BC08FD91D125F9B00224011 /* TutorSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorSignUp.swift; sourceTree = "<group>"; };
+		8BC08FDB1D1282BC00224011 /* TutorLogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorLogIn.swift; sourceTree = "<group>"; };
+		8BC08FDD1D1286D600224011 /* TutorWelcome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorWelcome.swift; sourceTree = "<group>"; };
+		8BF9D95C1CE249350058224D /* PairMe 2 .xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PairMe 2 .xcdatamodel"; sourceTree = "<group>"; };
+		8BF9D95D1CE249350058224D /* PairMe best.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PairMe best.xcdatamodel"; sourceTree = "<group>"; };
+		8BF9D95E1CE249350058224D /* PairMe.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PairMe.xcdatamodel; sourceTree = "<group>"; };
+		8BF9D9601CE94D030058224D /* ScheduleTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTime.swift; sourceTree = "<group>"; };
+		8BFEF42F1CDD1DCB00DCABDE /* Tutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutor.swift; sourceTree = "<group>"; };
+		8BFEF4311CDD245B00DCABDE /* TutorScheduleViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorScheduleViewCell.swift; sourceTree = "<group>"; };
+		8BFEF43E1CE0356200DCABDE /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		8BFEF4401CE03C3500DCABDE /* MyScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyScheduleViewController.swift; sourceTree = "<group>"; };
+		8F62784D050FFCBF27BA8E86 /* Pods-PairMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PairMe.release.xcconfig"; path = "Pods/Target Support Files/Pods-PairMe/Pods-PairMe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +67,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F472EC7DF8FFDFF38337F86 /* Pods_PairMe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2DFAECF58B3FD4D6EF01560D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4484FFDDA1993E59B8AD06A6 /* Pods_PairMe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		843CD4D21C9F9DBF00CE76F8 = {
 			isa = PBXGroup;
 			children = (
 				843CD4DD1C9F9DC000CE76F8 /* PairMe */,
 				843CD4DC1C9F9DC000CE76F8 /* Products */,
+				F30558E6C93610D4CF2154F0 /* Pods */,
+				2DFAECF58B3FD4D6EF01560D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +104,38 @@
 			isa = PBXGroup;
 			children = (
 				843CD4DE1C9F9DC000CE76F8 /* AppDelegate.swift */,
+				8BF9D95B1CE249350058224D /* PairMe.xcdatamodeld */,
 				843CD4E01C9F9DC000CE76F8 /* ViewController.swift */,
-				843CD4E21C9F9DC000CE76F8 /* Main.storyboard */,
+				849A9F501CC00DAC0004C88B /* DataService.swift */,
+				8BF9D9601CE94D030058224D /* ScheduleTime.swift */,
+				8BFEF43E1CE0356200DCABDE /* Schedule.swift */,
+				8BC08FD61D12569800224011 /* Main.storyboard */,
+				8BC08FDD1D1286D600224011 /* TutorWelcome.swift */,
+				8BC08FDB1D1282BC00224011 /* TutorLogIn.swift */,
+				8B35C9511CE0EB0600698D53 /* TutorScheduleViewController.swift */,
+				8BC08FD91D125F9B00224011 /* TutorSignUp.swift */,
+				8BFEF4311CDD245B00DCABDE /* TutorScheduleViewCell.swift */,
+				8BFEF42F1CDD1DCB00DCABDE /* Tutor.swift */,
+				8BFEF4401CE03C3500DCABDE /* MyScheduleViewController.swift */,
+				8B39A6F01CE133D2001C068E /* MyScheduleViewCell.swift */,
+				843CD4F01C9FA64B00CE76F8 /* ViewControllerStudentSignUp.swift */,
 				843CD4E51C9F9DC000CE76F8 /* Assets.xcassets */,
 				843CD4E71C9F9DC000CE76F8 /* LaunchScreen.storyboard */,
+				849A9F4E1CC00D230004C88B /* Constants.swift */,
 				843CD4EA1C9F9DC000CE76F8 /* Info.plist */,
+				8B0E97741CD8EF60008B01CF /* LoginViewController.swift */,
+				8B0E97761CD93415008B01CF /* WelcomeViewController.swift */,
 			);
 			path = PairMe;
+			sourceTree = "<group>";
+		};
+		F30558E6C93610D4CF2154F0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3FBF5EF60C9CB368E19BCA2D /* Pods-PairMe.debug.xcconfig */,
+				8F62784D050FFCBF27BA8E86 /* Pods-PairMe.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +145,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 843CD4ED1C9F9DC000CE76F8 /* Build configuration list for PBXNativeTarget "PairMe" */;
 			buildPhases = (
+				F5AA3D69D8006B703680C982 /* Check Pods Manifest.lock */,
 				843CD4D71C9F9DC000CE76F8 /* Sources */,
 				843CD4D81C9F9DC000CE76F8 /* Frameworks */,
 				843CD4D91C9F9DC000CE76F8 /* Resources */,
+				95F86CC236FC5105D0C55DB7 /* Embed Pods Frameworks */,
+				DCFDD659D9C540C0BCD9B7E2 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -96,6 +173,7 @@
 				TargetAttributes = {
 					843CD4DA1C9F9DC000CE76F8 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 3MH55HLJTM;
 					};
 				};
 			};
@@ -122,41 +200,105 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BC08FD81D12569800224011 /* Main.storyboard in Resources */,
 				843CD4E91C9F9DC000CE76F8 /* LaunchScreen.storyboard in Resources */,
 				843CD4E61C9F9DC000CE76F8 /* Assets.xcassets in Resources */,
-				843CD4E41C9F9DC000CE76F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		95F86CC236FC5105D0C55DB7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PairMe/Pods-PairMe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DCFDD659D9C540C0BCD9B7E2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PairMe/Pods-PairMe-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5AA3D69D8006B703680C982 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		843CD4D71C9F9DC000CE76F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BC08FDA1D125F9B00224011 /* TutorSignUp.swift in Sources */,
+				8BF9D9611CE94D030058224D /* ScheduleTime.swift in Sources */,
+				8B35C9521CE0EB0600698D53 /* TutorScheduleViewController.swift in Sources */,
+				8B39A6F11CE133D2001C068E /* MyScheduleViewCell.swift in Sources */,
+				8B0E97751CD8EF60008B01CF /* LoginViewController.swift in Sources */,
+				849A9F4F1CC00D240004C88B /* Constants.swift in Sources */,
 				843CD4E11C9F9DC000CE76F8 /* ViewController.swift in Sources */,
+				8BF9D95F1CE249350058224D /* PairMe.xcdatamodeld in Sources */,
 				843CD4DF1C9F9DC000CE76F8 /* AppDelegate.swift in Sources */,
+				8BC08FDE1D1286D600224011 /* TutorWelcome.swift in Sources */,
+				8BC08FDC1D1282BC00224011 /* TutorLogIn.swift in Sources */,
+				8BFEF43F1CE0356200DCABDE /* Schedule.swift in Sources */,
+				849A9F511CC00DAC0004C88B /* DataService.swift in Sources */,
+				8B0E97771CD93415008B01CF /* WelcomeViewController.swift in Sources */,
+				8BFEF4301CDD1DCB00DCABDE /* Tutor.swift in Sources */,
+				8BFEF4321CDD245B00DCABDE /* TutorScheduleViewCell.swift in Sources */,
+				8BFEF4411CE03C3500DCABDE /* MyScheduleViewController.swift in Sources */,
+				843CD4F11C9FA64B00CE76F8 /* ViewControllerStudentSignUp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		843CD4E21C9F9DC000CE76F8 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				843CD4E31C9F9DC000CE76F8 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		843CD4E71C9F9DC000CE76F8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				843CD4E81C9F9DC000CE76F8 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		8BC08FD61D12569800224011 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8BC08FD71D12569800224011 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -247,8 +389,10 @@
 		};
 		843CD4EE1C9F9DC000CE76F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FBF5EF60C9CB368E19BCA2D /* Pods-PairMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = PairMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.emelieonw.PairMe;
@@ -258,8 +402,10 @@
 		};
 		843CD4EF1C9F9DC000CE76F8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F62784D050FFCBF27BA8E86 /* Pods-PairMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = PairMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.emelieonw.PairMe;
@@ -286,8 +432,24 @@
 				843CD4EF1C9F9DC000CE76F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8BF9D95B1CE249350058224D /* PairMe.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8BF9D95C1CE249350058224D /* PairMe 2 .xcdatamodel */,
+				8BF9D95D1CE249350058224D /* PairMe best.xcdatamodel */,
+				8BF9D95E1CE249350058224D /* PairMe.xcdatamodel */,
+			);
+			currentVersion = 8BF9D95C1CE249350058224D /* PairMe 2 .xcdatamodel */;
+			path = PairMe.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 843CD4D31C9F9DC000CE76F8 /* Project object */;
 }
