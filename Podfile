@@ -5,7 +5,11 @@ use_frameworks!
 
 target 'PairMe' do
 
-pod 'Firebase', '>= 2.5.0'
+pod 'Firebase/Core'
+
+pod 'Firebase/Auth'
+
+pod 'Firebase/Database'
 
 end
 

@@ -11,22 +11,31 @@ import Firebase
 
 class WelccomeViewController: UIViewController {
     
-    @IBOutlet var name: UILabel!
     @IBOutlet var image: UIImageView!
+    @IBOutlet weak var name: UILabel!
     
+    var nameText: String?
     
-    var nameText: String!
-    var imageField: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        name.text = nameText
-        print(name.text)
-    
+        
         
        
     
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        
+        print("Name \(nameText)")
+        
+        
+            name.text = nameText
+        
+        
+        image.image  = UIImage(named:"yellow")
+        print(name.text)
+
     }
     
     

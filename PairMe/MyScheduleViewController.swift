@@ -8,22 +8,25 @@
 
 import UIKit
 import CoreData
+import EventKit
+import Firebase
+import EventKitUI
 
 var schedule: [Schedule] = []
 
-var fetchResultController: NSFetchedResultsController!
+var fetchResultController: NSFetchedResultsController<NSManagedObject>!
 
 class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
     
     override func viewDidLoad() {
-        let fetchRequest = NSFetchRequest(entityName: "Schedule")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Schedule")
         let sortDescriptor = NSSortDescriptor(key:"name", ascending: true
         )
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        if let managedObjectContext = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
-            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        if let managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext {
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest as! NSFetchRequest<NSManagedObject>, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
             
             fetchResultController.delegate = self
             
@@ -44,19 +47,19 @@ class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
     
 
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return schedule.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("CellMySchedule", forIndexPath: indexPath) as! MyScheduleViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CellMySchedule", for: indexPath) as! MyScheduleViewCell
         
         
-        cell.nameTutor.text = schedule[indexPath.row].name
-        cell.subject.text = schedule[indexPath.row].subject
-        cell.schedule.text = schedule[indexPath.row].tutorSchedule
-        cell.imageview.image = UIImage(named: schedule[indexPath.row].image)
+        cell.nameTutor.text = schedule[(indexPath as NSIndexPath).row].name
+        cell.subject.text = schedule[(indexPath as NSIndexPath).row].subject
+        cell.schedule.text = schedule[(indexPath as NSIndexPath).row].tutorSchedule
+        cell.imageview.image = UIImage(named: schedule[(indexPath as NSIndexPath).row].image)
         
         print(cell.nameTutor.text)
         print(cell.subject.text)
@@ -71,21 +74,70 @@ class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
         return cell
     }
 
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+         var eventStore : EKEventStore = EKEventStore()
+        
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm"
+        
+        print(schedule[(indexPath as NSIndexPath).row].tutorSchedule)
+        let bookedTime = dateFormatter.date(from: schedule[(indexPath as NSIndexPath).row].tutorSchedule)
+        let tutorName = schedule[(indexPath as NSIndexPath).row].name
+        let scheduleID = schedule[(indexPath as NSIndexPath).row].scheduleID
+        print(tutorName);
+        
+        print (bookedTime)
+        var startDate = bookedTime
+        var endDate = bookedTime!.addingTimeInterval(60*60)
+        
+        print(startDate,endDate)
+        
+        var event:EKEvent = EKEvent(eventStore: eventStore)
+        event.title = "Tutoring with \(schedule[(indexPath as NSIndexPath).row].name)"
+        event.startDate = startDate!
+        event.endDate = endDate
+        event.calendar = eventStore.defaultCalendarForNewEvents
+        print(event)
+        var predicate = eventStore.predicateForEvents(withStart: startDate!, end: endDate, calendars: nil)
+        var eventToBeDeleted = eventStore.events(matching: predicate) as [EKEvent]!
+        print(eventToBeDeleted)
+        func deleteEvent(_ Events: [EKEvent]){
+        
+            //Delete event from calendar
+            for i in eventToBeDeleted!{
+                do {try eventStore.remove(i, span: .thisEvent)}catch{ print (error)}
+            }
+        }
         
         // Delete button
         
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action, indexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action, indexPath) -> Void in
+            //Delete Event from Calendar
+            
+            deleteEvent(eventToBeDeleted!)
             
             //Delete it from the schedule array
-            schedule.removeAtIndex(indexPath.row)
+            schedule.remove(at: (indexPath as NSIndexPath).row)
+            
+            //Deleting it from the Firebase Datebase
+            _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)")
+            _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users")
+            let userID = UserDefaults.standard.value(forKey: "uid") as! String
+            let _SCHEDULE_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/schedule/")
+            
+            _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users/\(userID)/firstName/")
+            
+            let appointmentToBeDeleted = _SCHEDULE_REF_.child("\(tutorName)/\(scheduleID)")
+            appointmentToBeDeleted.removeValue()
             
             //Delete the row from the database
             
-            if let managedObjectContext = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext{
+            if let managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext{
             
-                let scheduleToDelete = fetchResultController.objectAtIndexPath(indexPath) as! Schedule
-                managedObjectContext.deleteObject(scheduleToDelete)
+                let scheduleToDelete = fetchResultController.object(at: indexPath) as! Schedule
+                managedObjectContext.delete(scheduleToDelete)
             
                 do {
                     try managedObjectContext.save()
@@ -95,8 +147,6 @@ class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
                     print(error)
                     
                 }
-                
-
             }
             
         })
@@ -106,30 +156,30 @@ class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
    
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         switch type {
-        case .Insert:
+        case .insert:
             if let _newIndex = newIndexPath{
             
-                tableView.insertRowsAtIndexPaths([_newIndex], withRowAnimation: .Fade)
+                tableView.insertRows(at: [_newIndex], with: .fade)
             }
             
-        case .Delete:
+        case .delete:
             if let _indexPath = indexPath {
             
-                tableView.deleteRowsAtIndexPaths( [_indexPath], withRowAnimation: .Fade)
+                tableView.deleteRows( at: [_indexPath], with: .fade)
             }
             
-        case .Update:
+        case .update:
             
             if let _indexPath = indexPath {
             
-                tableView.reloadRowsAtIndexPaths([_indexPath], withRowAnimation: .Fade)
+                tableView.reloadRows(at: [_indexPath], with: .fade)
             }
         default:
             tableView.reloadData()
@@ -140,11 +190,11 @@ class MySchedule: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         fetchResultController = nil;
     }
 }

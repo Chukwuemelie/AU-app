@@ -16,5 +16,6 @@ class Schedule: NSManagedObject {
     @NSManaged var timeWhenBooked: String
     @NSManaged var subject: String
     @NSManaged var image: String
+    @NSManaged var scheduleID: String
     
 }

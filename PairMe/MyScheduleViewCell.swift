@@ -18,6 +18,7 @@ class MyScheduleViewCell: UITableViewCell {
     @IBOutlet var schedule: UILabel!
    
 
+
     
 
 }

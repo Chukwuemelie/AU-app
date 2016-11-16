@@ -11,32 +11,34 @@ import UIKit
 
 class TutorLogIn : UIViewController {
     
+
     @IBOutlet var emailAddressTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     
+    var fullname: String = ""
     
     @IBAction func exitTutorLogin(){
-        self.dismissViewControllerAnimated(true, completion: {})
+        self.dismiss(animated: true, completion: {})
     
     
     }
     //Checking to see if the user is logged in
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         //if we have the uid stored, the user is already logged in - no need to sign up
         
-        if NSUserDefaults.standardUserDefaults().valueForKey("uid") != nil && DataService.dataService.CURRENT_TUTOR_REF.authData != nil {
+        if UserDefaults.standard.value(forKey: "uid") != nil && FIRAuth.auth()?.currentUser != nil {
             
-            self.performSegueWithIdentifier("TutorCurrentlyLoggedIn", sender: nil)
+            self.performSegue(withIdentifier: "TutorCurrentlyLoggedIn", sender: nil)
             
             
         }
     }
     
     
-    @IBAction func tryLogin(sender: AnyObject){
+    @IBAction func tryLogin(_ sender: AnyObject){
         
         let email = emailAddressTextField.text
         let password = passwordTextField.text
@@ -45,26 +47,50 @@ class TutorLogIn : UIViewController {
             
             //Login with the Firebase's authUser method
             
-            DataService.dataService.BASE_REF.authUser(email, password: password, withCompletionBlock: { error, authData in
+            FIRAuth.auth()?.signIn(withEmail: email!, password: password!){ (authData, error)in
                 
-                if error != nil {
+                if error != nil  {
                     
                     print(error)
                     self.loginErrorAlert("Oops!", message: "Check your email address and password")
                     
                 }else{
-                    //Be sure the correct uid is stored
                     
-                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
                     
-                    //Enter the app
+                    UserDefaults.standard.setValue(authData!.uid, forKey: "uid")
                     
-                    self.performSegueWithIdentifier("TutorCurrentlyLoggedIn", sender: nil)
+                    //Check whether the user is a tutor or student
+                    let userID = UserDefaults.standard.value(forKey: "uid") as! String
+                    let _TUTOR_REF = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/tutors/")
+                    _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/schedule/")
+                    _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users")
                     
+                    _ = _TUTOR_REF.child(userID).observe(FIRDataEventType.value, with: { (snapshot) in
+                        
+                        print(snapshot.value)
+                        
+                        if "\(snapshot.value)" == "Optional(<null>)"{
+                            self.loginErrorAlert("Oops!", message: "uhmm. I think you are a student :) Please go to the tutor login.")
+                            
+                        }
+                            
+                            
+                            
+                        else{
+                            
+                            
+                            
+                            //Enter the app
+                            self.performSegue(withIdentifier: "TutorCurrentlyLoggedIn", sender: nil)
+                            
+                        }
+                        
+                    })
                     
                 }
                 
-            })
+            }
+
             
         }
             
@@ -79,27 +105,50 @@ class TutorLogIn : UIViewController {
     }
     
     
-    func loginErrorAlert(title: String, message:String){
+    func loginErrorAlert(_ title: String, message:String){
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction (title: "Ok", style: .Default, handler: nil)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction (title: "Ok", style: .default, handler: nil)
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion:nil)
+        present(alert, animated: true, completion:nil)
     }
     
     
     
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "TutorCurrentlyLoggedIn" {
             
-            let destinationController = segue.destinationViewController as! TutorWelcome
             
             
             
+            //Getting the name of the tutor
+            let userID = UserDefaults.standard.value(forKey: "uid") as! String
+            let _TUTOR_REF = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/tutors/")
+            _ = _TUTOR_REF.child("\(userID)").observe(FIRDataEventType.value, with: { (snapshot) in
+                
+                
+                if let tutorInfo = snapshot.value as? NSDictionary {
+                    print("\(tutorInfo)")
+                    let firstname = tutorInfo["firstName"] as? String
+                    let lastname =  tutorInfo["lastname"] as? String
+                    if (tutorInfo["firstName"]) != nil {
+                        
+                        self.fullname = "\(firstname!) " + "\(lastname!)"}
+                    
+                }
+                
+                print(self.fullname)
+                let destinationController = segue.destination as! TutorHome
+                print(self.fullname)
+                destinationController.name = self.fullname
+            })
             
+            
+
+          
             
         }
         

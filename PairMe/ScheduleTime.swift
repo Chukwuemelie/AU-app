@@ -11,23 +11,27 @@ import CoreData
 import Firebase
 import EventKit
 import EventKitUI
+import Firebase
 
 class ScheduleTime: UIViewController {
     
     @IBOutlet var timeLabel:UILabel!
     @IBOutlet var datePicker: UIDatePicker!
+    @IBOutlet var bookTimeButton: UIButton!
+    
+    
     
     var scheduleWithTime: Tutors!
     var schedule: Schedule!
     
-    func datePickerValueChanged(datePicker: UIDatePicker){
+    func datePickerValueChanged(_ datePicker: UIDatePicker){
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         
-        dateFormatter.dateFormat = "EEEE, MMMM dd, HH:mm"
-        let bookedTime = dateFormatter.stringFromDate(datePicker.date)
+        dateFormatter.dateFormat = "EEEE, MMMM dd yyyy, HH:mm"
+        let bookedTime = dateFormatter.string(from: datePicker.date)
         timeLabel.text = bookedTime
-        
+        self.bookTimeButton.isEnabled = true
     }
 
 
@@ -40,23 +44,23 @@ class ScheduleTime: UIViewController {
         
         
         
-        datePicker.addTarget(self, action: #selector(ScheduleTime.datePickerValueChanged), forControlEvents: UIControlEvents.ValueChanged)
-        
-    
+        datePicker.addTarget(self, action: #selector(ScheduleTime.datePickerValueChanged), for: UIControlEvents.valueChanged)
+            self.bookTimeButton.isEnabled = false
         
         
     }
     
-    func createEvent(eventStore: EKEventStore, title: String, startDate: NSDate, endDate: NSDate){
+    func createEvent(_ eventStore: EKEventStore, title: String, startDate: Date, endDate: Date, alarm:EKAlarm){
         let event = EKEvent(eventStore: eventStore)
         event.title = title
         event.startDate = startDate
         event.endDate = endDate
         event.calendar = eventStore.defaultCalendarForNewEvents
+        event.alarms = [alarm]
         
         do {
             
-            try eventStore.saveEvent(event, span: .ThisEvent)
+            try eventStore.save(event, span: .thisEvent)
         }catch{
         
             print("Did not save to calendar")
@@ -65,80 +69,98 @@ class ScheduleTime: UIViewController {
     }
     
     @IBAction  func bookTime(){
-        
+        var key: String = "n"
         let eventStore = EKEventStore()
-        var startDate = NSDate()
+        var startDate = Date()
         startDate = datePicker.date
-        
-        let endDate = startDate.dateByAddingTimeInterval(60 * 60) // One hour
-        
-        if (EKEventStore.authorizationStatusForEntityType(.Event) != EKAuthorizationStatus.Authorized) {
-            eventStore.requestAccessToEntityType(.Event, completion: {
+        let endDate = startDate.addingTimeInterval(60 * 60) // One hour
+        let alarm:EKAlarm = EKAlarm(relativeOffset: -300)
+        if (EKEventStore.authorizationStatus(for: .event) != EKAuthorizationStatus.authorized) {
+            eventStore.requestAccess(to: .event, completion: {
                 granted, error in
-                self.createEvent(eventStore, title: "Tutoring with \(self.scheduleWithTime.name)", startDate: startDate, endDate: endDate)
+                self.createEvent(eventStore, title: "Tutoring with \(self.scheduleWithTime.name)", startDate: startDate, endDate: endDate, alarm:alarm)
             })
         } else {
-            createEvent(eventStore, title: "Tutoring with \(self.scheduleWithTime.name)", startDate: startDate, endDate: endDate)
+            createEvent(eventStore, title: "Tutoring with \(self.scheduleWithTime.name)", startDate: startDate, endDate: endDate,alarm: alarm)
         }
         
-        self.performSegueWithIdentifier("ShowMySchedule", sender: nil)
+        self.performSegue(withIdentifier: "ShowMySchedule", sender: nil)
 
         
-        var ref = Firebase(url: "https://pairme.firebaseio.com")
-        var matches = ref.childByAppendingPath("matches")
+        //Storing the schedule in Firebase
+       
+        _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)")
+        _ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users")
+        let userID = UserDefaults.standard.value(forKey: "uid") as! String
+        let _SCHEDULE_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/schedule/")
         
-        var match = [
-            
-             "student" : NSUserDefaults.standardUserDefaults().stringForKey("uid") as! AnyObject,
-             "tutor": "wewew"
-        ]
+        let usernameRef = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users/\(userID)/firstName/")
         
-        var matchRef = matches.childByAutoId()
+        var nameStudent: AnyObject?
         
-        matchRef.setValue(match)
-        
-        
-        if let managedObjectContext = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
+       
+        _ = usernameRef.observe(FIRDataEventType.value, with: { (snapshot) in
             
-            self.schedule  = NSEntityDescription.insertNewObjectForEntityForName("Schedule", inManagedObjectContext: managedObjectContext) as! Schedule
-            
-            self.schedule.name = scheduleWithTime.name
-            self.schedule.image =  scheduleWithTime.image
-            self.schedule.subject = scheduleWithTime.subject
-            self.schedule.tutorSchedule = timeLabel.text!
-            
-            //Testing to see if the data is saved in CoreData correctly
-            print( self.schedule.name)
-            print(self.schedule.image)
-            print(self.schedule.subject)
-            print(self.schedule.tutorSchedule)
+            nameStudent = snapshot.value! as AnyObject?
+            let match = [
+                
+                "student" : "\(nameStudent!)",
+                "time": "\(self.timeLabel.text!)"
+            ]
             
             
-            do {
+             key = _SCHEDULE_REF_.child("\(self.scheduleWithTime.name)").childByAutoId().key
+            _SCHEDULE_REF_.child("\(self.scheduleWithTime.name)/\(key)").updateChildValues(match)
+            
+            
+            //Storing the Data
+            
+            if let managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext {
                 
-                try managedObjectContext.save()
+                self.schedule  = NSEntityDescription.insertNewObject(forEntityName: "Schedule", into: managedObjectContext) as! Schedule
+                
+                self.schedule.name = self.scheduleWithTime.name
+                self.schedule.image =  self.scheduleWithTime.image
+                self.schedule.subject = self.scheduleWithTime.subject
+                self.schedule.tutorSchedule = self.timeLabel.text!
+                self.schedule.scheduleID = key
                 
                 
                 
-            } catch {
+                //Testing to see if the data is saved in CoreData correctly
+                print(self.schedule.name)
+                print(self.schedule.image)
+                print(self.schedule.subject)
+                print(self.schedule.tutorSchedule)
+                print(key)
                 
-                print (error)
-                return
+                do {
+                    
+                    try managedObjectContext.save()
+                    
+                    
+                    
+                } catch {
+                    
+                    print (error)
+                    return
+                    
+                }
+                
+                
+                
                 
             }
             
+        
             
             
-            
-        }
-        
-        
-        
-        let bookedApt = UIAlertController(title: "Done", message: "We have scheduled an appointment with \(self.scheduleWithTime.name)", preferredStyle: .Alert)
-        bookedApt.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-        self.presentViewController(bookedApt, animated: true, completion: {})
-        }
-
+        })
+        //Retrieving the user name
+        let bookedApt = UIAlertController(title: "Done", message: "We have scheduled an appointment with \(self.scheduleWithTime.name)", preferredStyle: .alert)
+        bookedApt.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(bookedApt, animated: true, completion: {})
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

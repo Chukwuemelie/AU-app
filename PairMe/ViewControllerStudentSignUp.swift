@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -33,19 +34,19 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
         // Dispose of any resources that can be recreated.
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        if indexPath.row == 0{
+        if (indexPath as NSIndexPath).row == 0{
             
         
-            if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary){
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
                 imagePicker.allowsEditing = false
-                imagePicker.sourceType = .PhotoLibrary
+                imagePicker.sourceType = .photoLibrary
                 
-                self.presentViewController(imagePicker, animated: true, completion: nil)
+                self.present(imagePicker, animated: true, completion: nil)
             
             
             }
@@ -53,50 +54,50 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
         
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.clipsToBounds = true
         
-        let leadingConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: imageView.superview, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 0)
+        let leadingConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: imageView.superview, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 0)
         
-        leadingConstraint.active = true
-        dismissViewControllerAnimated(true, completion: nil)
+        leadingConstraint.isActive = true
+        dismiss(animated: true, completion: nil)
         
-        let trailingConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: imageView.superview, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: imageView.superview, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: 0)
         
-        trailingConstraint.active = true
+        trailingConstraint.isActive = true
         
-        let topConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: imageView.superview, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: imageView.superview, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 0)
         
-        topConstraint.active = true
+        topConstraint.isActive = true
         
-        let bottomConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: imageView.superview, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: imageView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: imageView.superview, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0)
         
-        bottomConstraint.active = true
+        bottomConstraint.isActive = true
         
     }
     
        
-    func signupErrorAlert(title: String, message: String) {
+    func signupErrorAlert(_ title: String, message: String) {
         
         // Called upon signup error to let the user know signup didn't work.
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     
     
 
 
-    @IBAction func createAccount(sender: AnyObject){
+    @IBAction func createAccount(_ sender: AnyObject){
         let school = schoolTextField.text
         let firstName = firstNameTextField.text
         let lastName = lastNameTextField.text
@@ -109,7 +110,7 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
         if username != "" && email != "" && password != "" &&  school != "" && firstName != "" && lastName != "" && password == passwordVal {
             
                 //Set up the email and password for the user
-                DataService.dataService.BASE_REF.createUser(email, password: password, withValueCompletionBlock: { error, result in
+                FIRAuth.auth()?.createUser(withEmail: email!, password: password!, completion: { result, error in
                     
                     if error != nil {
                         
@@ -121,15 +122,16 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
                         
                         //Create and Login in the user using authUser
                         
-                        DataService.dataService.BASE_REF.authUser(email, password: password, withCompletionBlock: {
-                            err, authData in
-                            
-                            
-                            let user = ["provider": authData.provider! , "email": email!, "username": username!, "firstName": firstName!, "lastname":lastName!, "school":school!]
+                       FIRAuth.auth()?.signIn(withEmail: email!, password: password!, completion: {
+                            (authdata, error) in
+                        
+                        
+                         
+                        let user: [String : String] = ["provider": (authdata?.providerID)!, "email": email!, "username": username!, "firstName": firstName!, "lastname":lastName!, "school":school!]
                             
                             //Seal the deal in DataService.swift
                             
-                            DataService.dataService.createNewAccount(authData.uid, user: user)
+                            DataService.dataService.createNewAccount((authdata?.uid)!, user: user)
                             
                          
                             
@@ -137,12 +139,12 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
                         
                         //Store the uid for future access - handy!
                         
-                        NSUserDefaults.standardUserDefaults().setValue(result["uid"], forKey: "uid")
+                        UserDefaults.standard.setValue(result?.uid, forKey: "uid")
                     }
                     
                     //Enter the app
                                        
-                    self.performSegueWithIdentifier("NewUserLoggedIn", sender:nil)
+                    self.performSegue(withIdentifier: "NewUserLoggedIn", sender:nil)
                     
                 })
                 
@@ -164,14 +166,14 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "NewUserLoggedIn" {
             
-            let destinationController = segue.destinationViewController as! WelccomeViewController
+            let destinationController = segue.destination as! WelccomeViewController
             
             destinationController.nameText  = firstNameTextField.text
-            destinationController.imageField = self.imageView.image
+            
             
             print(destinationController.nameText)
             
@@ -195,3 +197,4 @@ class ViewControllerStudentSignUp: UITableViewController, UIImagePickerControlle
     }
 
 }
+

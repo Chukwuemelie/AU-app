@@ -14,57 +14,62 @@ class DataService{
     
     static let dataService = DataService()
     
-    private var _BASE_REF_ = Firebase(url: "\(BASE_URL)")
-    private var _USER_REF_ = Firebase(url: "\(BASE_URL)/users")
-    private var _TUTOR_REF_ = Firebase(url: "\(BASE_URL)/tutors")
+    fileprivate var _BASE_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)")
+    fileprivate var _USER_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/users")
+    fileprivate var _TUTOR_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/tutors")
+    fileprivate var _SCHEDULE_REF_ = FIRDatabase.database().reference(fromURL: "\(BASE_URL)/schedule")
     
-    var BASE_REF: Firebase{
+    var BASE_REF: FIRDatabaseReference{
         
         return _BASE_REF_
         
     }
     
     
-    var USER_REF: Firebase{
+    var USER_REF: FIRDatabaseReference{
         return _USER_REF_
     
     
     }
     
-    var CURRENT_USER_REF: Firebase{
+    var CURRENT_USER_REF: FIRDatabaseReference{
     
-        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
-        let currentUser = Firebase(url: "\(BASE_REF)").childByAppendingPath("users").childByAppendingPath(userID)
+        let userID = UserDefaults.standard.value(forKey: "uid") as! String
+        let currentUser = FIRDatabase.database().reference(fromURL: "\(BASE_URL)").child(byAppendingPath: "users").child(byAppendingPath: userID)
         
         return currentUser
     
     
     }
     
-    var TUTOR_REF: Firebase{
+    var TUTOR_REF: FIRDatabaseReference{
         return _TUTOR_REF_
     }
     
-    var CURRENT_TUTOR_REF: Firebase{
-        let userID = NSUserDefaults.standardUserDefaults().valueForKey("uid") as! String
-        let currentTutor = Firebase(url: "\(BASE_REF)").childByAppendingPath("tutors").childByAppendingPath(userID)
+    var CURRENT_TUTOR_REF: FIRDatabaseReference{
+        let userID = UserDefaults.standard.value(forKey: "uid") as! String
+        let currentTutor = FIRDatabase.database().reference(fromURL: "\(BASE_URL)").child(byAppendingPath: "tutors").child(byAppendingPath: userID)
         
         return currentTutor
 
     }
+    
+    var SCHEDULE_REF: FIRDatabaseReference{
+        
+        return SCHEDULE_REF
+        
+    }
+    
 
+    func createNewAccount(_ uid: String, user: Dictionary<String, String>){
     
-    
-
-    func createNewAccount(uid: String, user: Dictionary<String, String>){
-    
-        USER_REF.childByAppendingPath(uid).setValue(user)
+        USER_REF.child(byAppendingPath: uid).setValue(user)
     
     
     }
     
-    func createNewTutorAccount(uid: String, tutor: Dictionary<String, String>){
-        TUTOR_REF.childByAppendingPath(uid).setValue(tutor)
+    func createNewTutorAccount(_ uid: String, tutor: Dictionary<String, String>){
+        TUTOR_REF.child(byAppendingPath: uid).setValue(tutor)
 
     }
 

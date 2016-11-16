@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Xcode 7.0">
     <entity name="Schedule" representedClassName=".Schedule" syncable="YES">
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="scheduleID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeWhenBooked" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tutorSchedule" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Schedule" positionX="-63" positionY="-63" width="128" height="120"/>
+        <element name="Schedule" positionX="-63" positionY="-63" width="128" height="135"/>
     </elements>
 </model>

@@ -17,8 +17,8 @@ class TutorScheduleViewController: UITableViewController {
         
         Tutors(name: "Chukwuemelie Onwubuya", image: "chuk.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
         Tutors(name: "Raluchukwu Onwubuya", image: "ralu.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
-        Tutors(name: "Eric Coleman", image: "", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
-        Tutors(name: "Tinom Shokfai", image: "tinom.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),Tutors(name: "Esther Olunkunle", image: "", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
+        Tutors(name: "Eric Coleman", image: "eric.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
+        Tutors(name: "Tinom Shokfai", image: "tinom.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),Tutors(name: "Esther Olunkunle", image: "esther.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm"),
         Tutors(name: "Taiwo Adelabu", image: "taiwo.jpg", subject: "Maths & Physics", schedule: "Weekdays 11am-12pm")
         
         
@@ -42,18 +42,18 @@ class TutorScheduleViewController: UITableViewController {
     
     
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tutors.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! TutorScheduleViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TutorScheduleViewCell
         
-        cell.name.text = tutors[indexPath.row].name
-        cell.subject.text = tutors[indexPath.row].subject
-        cell.schedule.text = tutors[indexPath.row].schedule
-        cell.imageview.image = UIImage(named: tutors[indexPath.row].image)
+        cell.name.text = tutors[(indexPath as NSIndexPath).row].name
+        cell.subject.text = tutors[(indexPath as NSIndexPath).row].subject
+        cell.schedule.text = tutors[(indexPath as NSIndexPath).row].schedule
+        cell.imageview.image = UIImage(named: tutors[(indexPath as NSIndexPath).row].image)
         
         //creating circular images
         cell.imageview.layer.cornerRadius = 29.0
@@ -64,18 +64,18 @@ class TutorScheduleViewController: UITableViewController {
     
     
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
         //Create and option menu
-        let optionMenu = UIAlertController(title: "Appointment", message: "Would you like to book an appointment?", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let optionMenu = UIAlertController(title: "Appointment", message: "Would you like to book an appointment?", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         //Add actions to the option menu
-        let cancelActions = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let cancelActions = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         optionMenu.addAction(cancelActions)
         
         let indexPath = self.tableView.indexPathForSelectedRow
-        let bookAppointment = UIAlertAction(title: "Schedule one with \(tutors[indexPath!.row].name)", style: .Default, handler: {(action:UIAlertAction) -> Void in
+        let bookAppointment = UIAlertAction(title: "Schedule one with \(tutors[(indexPath! as NSIndexPath).row].name)", style: .default, handler: {(action:UIAlertAction) -> Void in
                 
 //                if let managedObjectContext = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext {
 //                    
@@ -118,7 +118,7 @@ class TutorScheduleViewController: UITableViewController {
 //            self.presentViewController(bookedApt, animated: true, completion: nil)
             
             
-            self.performSegueWithIdentifier("ShowTimePicker", sender: nil )
+            self.performSegue(withIdentifier: "ShowTimePicker", sender: nil )
         })
         
         optionMenu.addAction(bookAppointment)
@@ -127,7 +127,7 @@ class TutorScheduleViewController: UITableViewController {
         
         
         //Display menu
-        self.presentViewController(optionMenu, animated: true, completion: nil)
+        self.present(optionMenu, animated: true, completion: nil)
             
         
         
@@ -135,11 +135,11 @@ class TutorScheduleViewController: UITableViewController {
     
     
    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowTimePicker" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let destinationController = segue.destinationViewController as! ScheduleTime
-                destinationController.scheduleWithTime = self.tutors[indexPath.row]
+                let destinationController = segue.destination as! ScheduleTime
+                destinationController.scheduleWithTime = self.tutors[(indexPath as NSIndexPath).row]
                 print(destinationController.scheduleWithTime)
             }
         }
